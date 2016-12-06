@@ -11,6 +11,7 @@
   "dependencies": {
     "hapi": "16.0.1",
     "inert": "4.0.3",
-    "multiparty": "4.1.2"
+    "multiparty": "4.1.2",
+    "shelljs": "0.7.5"
   }
 }
