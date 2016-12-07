@@ -77,10 +77,10 @@ server.register(require('inert'), () => {
                         fs.mkdirSync(`${__dirname}/views/file/${folderName}`);
                     }
 
-                    fs.writeFile(`./views/file/${folderName}/${fileName}`, fileContent, 'utf8', err => {
+                    fs.writeFile(`${__dirname}/views/file/${folderName}/${fileName}`, fileContent, 'utf8', err => {
 
                         if (err) {
-                            console.log('write file error', err);
+                            console.log('write file error', `./views/file/${folderName}/${fileName}`,  err);
                             return reply('write file error');
                         }
 
