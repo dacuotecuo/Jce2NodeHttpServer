@@ -77,24 +77,32 @@ server.register(require('inert'), () => {
                         fs.mkdirSync(`${__dirname}/views/file/${folderName}`);
                     }
 
-                    fs.writeFileSync(`./views/file/${folderName}/${fileName}`, fileContent, 'utf8');
+                    fs.writeFile(`./views/file/${folderName}/${fileName}`, fileContent, 'utf8', err => {
 
-                    exec(`jce2node --server --client ${fileName}`);
-                    
-                    cd('views/file');
+                        if (err) {
+                            console.log('write file error', err);
+                            return reply('write file error');
+                        }
 
-                    console.log(`tar cvfz ${folderName}.tgz ${folderName}/`);
+                        cd(`views/file/${folderName}/`);
 
-                    exec(`tar cvfz ${folderName}.tgz ${folderName}/`);
+                        exec(`jce2node --server --client ${fileName}`);
 
-                    setTimeout(() => {
+                        console.log(`tar cvfz ${folderName}.tgz ${folderName}/`);
 
-                        cd(`${__dirname}/views/file`);
-                        exec(`rm -rf ${folderName}.tgz ${folderName}/`);
+                        cd(`..`);
 
-                    }, 5 * 1e3);
+                        exec(`tar cvfz ${folderName}.tgz ${folderName}/`);
 
-                    return reply.redirect(`/download?file=${folderName}`);
+                        setTimeout(() => {
+
+                            cd(`${__dirname}/views/file`);
+                            exec(`rm -rf ${folderName}.tgz ${folderName}/`);
+
+                        }, 5 * 1e3);
+
+                        return reply.redirect(`/download?file=${folderName}`);
+                    });
 
                 });
             });
